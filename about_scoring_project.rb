@@ -29,8 +29,34 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 #
 # Your goal is to write the score method.
 
+# Could improve the method by refactoring the methods and just having special cases for 5 and 7
+# Could also short circuit by only calling things if needed.
+
 def score(dice)
-  # You need to write this method
+  total = 0
+  total += leftovers(dice.select { |x| x == 1}, 1)
+  total += leftovers(dice.select { |x| x == 2}, 2)
+  total += leftovers(dice.select { |x| x == 3}, 3)
+  total += leftovers(dice.select { |x| x == 4}, 4)
+  total += leftovers(dice.select { |x| x == 5}, 5)
+  total += leftovers(dice.select { |x| x == 6}, 6)
+  total += leftovers(dice.select { |x| x == 7}, 7)
+  total += leftovers(dice.select { |x| x == 8}, 8)
+  total += leftovers(dice.select { |x| x == 9}, 9)
+  total
+end
+
+def leftovers(leftover, num)
+  groups_of_num = leftover.size >= 3 ? leftover.size / 3 : 0
+  leftover.pop(groups_of_num * 3)
+  if num == 1
+    total = groups_of_num * 1000 + 100 * leftover.size
+  elsif num == 5
+    total = groups_of_num * 500 + 50 * leftover.size
+  else
+    total = groups_of_num * (num * 100)
+  end
+  total
 end
 
 class AboutScoringProject < Neo::Koan
